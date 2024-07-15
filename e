@@ -1,11 +1,9 @@
--- Define the toggle key
+-- Define the toggle key and smoothness
 _G.ToggleKey = _G.ToggleKey or "Q"
+_G.Smoothness = _G.Smoothness or 0.1  -- Default smoothness
 
 -- Loadstring setup
 if not game:IsLoaded() then game.Loaded:Wait() end
-
-print("Script executed successfully")
-warn("Vulnerability: 0 | Errors: 0 | Status: Working")
 
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
@@ -30,7 +28,7 @@ local function aimAt(target)
         local targetPosition = target.Character.HumanoidRootPart.Position
         local direction = (targetPosition - Camera.CFrame.p).unit
         local targetCFrame = CFrame.new(Camera.CFrame.p, Camera.CFrame.p + direction)
-        Camera.CFrame = Camera.CFrame:Lerp(targetCFrame, 10) -- Smoothly aim at the target
+        Camera.CFrame = Camera.CFrame:Lerp(targetCFrame, _G.Smoothness) -- Smoothly aim at the target
     end
 end
 
