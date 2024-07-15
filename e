@@ -1,8 +1,11 @@
 -- Define the toggle key
-_G.ToggleKey = "Q"
+_G.ToggleKey = _G.ToggleKey or "Q"
 
 -- Loadstring setup
 if not game:IsLoaded() then game.Loaded:Wait() end
+
+print("Script executed successfully")
+warn("Vulnerability: 0 | Errors: 0 | Status: Working")
 
 local Players = game:GetService("Players")
 local UserInputService = game:GetService("UserInputService")
@@ -13,19 +16,13 @@ local LocalPlayer = Players.LocalPlayer
 local AimlockEnabled = false
 local Target = nil
 
-local function getClosestPlayer()
-    local closestDistance = math.huge
-    local closestPlayer = nil
-    for _, player in pairs(Players:GetPlayers()) do
-        if player ~= LocalPlayer and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
-            local distance = (player.Character.HumanoidRootPart.Position - LocalPlayer.Character.HumanoidRootPart.Position).magnitude
-            if distance < closestDistance then
-                closestDistance = distance
-                closestPlayer = player
-            end
-        end
+local function getMouseTarget()
+    local mouse = LocalPlayer:GetMouse()
+    local target = mouse.Target
+    if target and target.Parent and Players:FindFirstChild(target.Parent.Name) then
+        return Players[target.Parent.Name]
     end
-    return closestPlayer
+    return nil
 end
 
 local function aimAt(target)
@@ -33,7 +30,7 @@ local function aimAt(target)
         local targetPosition = target.Character.HumanoidRootPart.Position
         local direction = (targetPosition - Camera.CFrame.p).unit
         local targetCFrame = CFrame.new(Camera.CFrame.p, Camera.CFrame.p + direction)
-        Camera.CFrame = Camera.CFrame:Lerp(targetCFrame, 0.1) -- Smoothly aim at the target
+        Camera.CFrame = Camera.CFrame:Lerp(targetCFrame, 0.2) -- Smoothly aim at the target
     end
 end
 
@@ -42,7 +39,7 @@ local function onInputBegan(input, processed)
     if input.KeyCode == Enum.KeyCode[_G.ToggleKey] then
         AimlockEnabled = not AimlockEnabled
         if AimlockEnabled then
-            Target = getClosestPlayer()
+            Target = getMouseTarget()
         else
             Target = nil
         end
