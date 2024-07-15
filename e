@@ -30,7 +30,7 @@ local function aimAt(target)
         local targetPosition = target.Character.HumanoidRootPart.Position
         local direction = (targetPosition - Camera.CFrame.p).unit
         local targetCFrame = CFrame.new(Camera.CFrame.p, Camera.CFrame.p + direction)
-        Camera.CFrame = Camera.CFrame:Lerp(targetCFrame, 0.1) -- Smoothly aim at the target
+        Camera.CFrame = Camera.CFrame:Lerp(targetCFrame, 1) -- Smoothly aim at the target
     end
 end
 
